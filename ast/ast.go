@@ -1,8 +1,8 @@
 package ast
 
 import (
-	"cinnamon/token"
 	"bytes"
+	"cinnamon/token"
 	"strings"
 )
 
