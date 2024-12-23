@@ -14,19 +14,25 @@ TODO BNF
 - [x] Variables
 - [x] Arithmetic operations
 - [x] Logical operations
-- [ ] Functions
-- [ ] Comparison operations
-- [ ] Control structures (if, else, while)
+- [x] Functions
+- [x] Comparison operations
+- [ ] Control structures
+  - [x] if, else
+  - [ ] else if branch
+  - [ ] switch, case
+  - [ ] match, when
+  - [ ] while, for, loop
+  - [ ] break, continue
+- [ ] Garbage collection
 - [ ] Comments
 - [ ] Strings
+- [ ] Error handling
 - [ ] Arrays
 - [ ] Standard library
-- [ ] Error handling
 - [ ] Modules
 - [ ] Classes
 - [ ] Generics
 - [ ] Multithreading
-- [ ] Garbage collection
 
 ## Usage
 
