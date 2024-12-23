@@ -1,9 +1,9 @@
 package parser
 
 import (
-	"cinnamon/ast"
-	"cinnamon/lexer"
 	"fmt"
+	"lemon/ast"
+	"lemon/lexer"
 	"testing"
 )
 

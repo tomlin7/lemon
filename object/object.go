@@ -2,8 +2,8 @@ package object
 
 import (
 	"bytes"
-	"cinnamon/ast"
 	"fmt"
+	"lemon/ast"
 	"strings"
 )
 

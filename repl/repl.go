@@ -2,12 +2,12 @@ package repl
 
 import (
 	"bufio"
-	"cinnamon/evaluator"
-	"cinnamon/lexer"
-	"cinnamon/object"
-	"cinnamon/parser"
 	"fmt"
 	"io"
+	"lemon/evaluator"
+	"lemon/lexer"
+	"lemon/object"
+	"lemon/parser"
 )
 
 const PROMPT = ">> "

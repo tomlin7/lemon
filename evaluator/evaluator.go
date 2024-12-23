@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"cinnamon/ast"
-	"cinnamon/object"
 	"fmt"
+	"lemon/ast"
+	"lemon/object"
 )
 
 var (

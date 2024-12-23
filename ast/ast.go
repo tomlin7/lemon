@@ -2,7 +2,7 @@ package ast
 
 import (
 	"bytes"
-	"cinnamon/token"
+	"lemon/token"
 	"strings"
 )
 

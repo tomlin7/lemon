@@ -1,10 +1,10 @@
 package parser
 
 import (
-	"cinnamon/ast"
-	"cinnamon/lexer"
-	"cinnamon/token"
 	"fmt"
+	"lemon/ast"
+	"lemon/lexer"
+	"lemon/token"
 	"strconv"
 )
 

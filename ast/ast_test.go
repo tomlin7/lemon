@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"cinnamon/token"
+	"lemon/token"
 	"testing"
 )
 

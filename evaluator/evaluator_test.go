@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"cinnamon/lexer"
-	"cinnamon/object"
-	"cinnamon/parser"
+	"lemon/lexer"
+	"lemon/object"
+	"lemon/parser"
 	"testing"
 )
 
