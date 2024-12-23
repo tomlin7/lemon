@@ -24,8 +24,9 @@ TODO BNF
   - [ ] while, for, loop
   - [ ] break, continue
 - [x] Garbage collection
+- [x] Strings
+- [ ] String concatenation
 - [ ] Comments
-- [ ] Strings
 - [ ] Error handling
 - [ ] Arrays
 - [ ] Standard library
