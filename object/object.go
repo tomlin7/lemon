@@ -75,7 +75,7 @@ type Error struct {
 }
 
 func (e *Error) Type() ObjectType { return ERROR_OBJ }
-func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
+func (e *Error) Inspect() string  { return "\x1b[48;5;196mERROR:\x1b[0m " + e.Message }
 
 type Function struct {
 	Parameters []*ast.Identifier
