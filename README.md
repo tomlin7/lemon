@@ -23,7 +23,7 @@ TODO BNF
   - [ ] match, when
   - [ ] while, for, loop
   - [ ] break, continue
-- [ ] Garbage collection
+- [x] Garbage collection
 - [ ] Comments
 - [ ] Strings
 - [ ] Error handling
@@ -46,6 +46,12 @@ To build the interpreter, use the following command:
 
 ```bash
 go build
+```
+
+Running [lemon files](./example.mm) (after building):
+
+```bash
+lemon example.mm
 ```
 
 To run tests, use the following command:
