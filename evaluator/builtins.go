@@ -28,6 +28,8 @@ var builtins = map[string]*object.Builtin{
 			switch arg := args[0].(type) {
 			case *object.Array:
 				return arg.Elements[0]
+			case *object.String:
+				return &object.String{Value: string(arg.Value[0])}
 			default:
 				return newError("argument to `first` not supported, got %s", args[0].Type())
 			}
