@@ -25,7 +25,7 @@ TODO BNF
   - [ ] break, continue
 - [x] Garbage collection
 - [x] Strings
-- [ ] String concatenation
+- [x] String concatenation
 - [ ] Comments
 - [ ] Error handling
 - [ ] Arrays
