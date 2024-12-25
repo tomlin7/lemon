@@ -1,6 +1,9 @@
 package evaluator
 
-import "lemon/object"
+import (
+	"fmt"
+	"lemon/object"
+)
 
 var builtins = map[string]*object.Builtin{
 	"len": {
@@ -93,6 +96,17 @@ var builtins = map[string]*object.Builtin{
 			arr := args[0].(*object.Array)
 			arr.Elements = append(arr.Elements, args[1])
 			return arr
+		},
+	},
+
+	"print": {
+		Fn: func(args ...object.Object) object.Object {
+			for _, arg := range args {
+				fmt.Printf("%s ", arg.Inspect())
+			}
+			fmt.Println()
+
+			return NULL
 		},
 	},
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"lemon/cli"
 	"lemon/repl"
 	"os"
 	"os/user"
@@ -22,8 +23,7 @@ func main() {
 		}
 
 		defer file.Close()
-
-		repl.Start(file, os.Stdout)
+		cli.Exec(file, os.Stdout)
 	} else {
 
 		fmt.Printf("Hello %s! Welcome to \x1b[48;5;226mLemon REPL\x1b[0m\n", user.Username)
