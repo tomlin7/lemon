@@ -4,9 +4,12 @@ Lemon is a tiny, fast, interpreted language. This repository contains the source
 
 ![repl](.github/image.png)
 
-## Syntax
+## Hello, Lemon!
 
-TODO BNF
+```js
+let message = "Hello, Lemon!";
+print(message);
+```
 
 ## Features
 
