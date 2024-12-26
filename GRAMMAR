@@ -1,0 +1,53 @@
+<program> ::= <statement>*
+
+<statement> ::= <let_statement> | <expression>
+
+<let_statement> ::= "let" <identifier> "=" <expression> ";"
+
+<expression> ::= <literal>
+               | <identifier>
+               | <binary_operation>
+               | <function_definition>
+               | <function_call>
+               | <array_access>
+               | <if_expression>
+               | <return_statement>
+
+<literal> ::= <number>
+            | <string>
+            | <array>
+            | <object>
+            | "true"
+            | "false"
+
+<number> ::= <digit>+ ("." <digit>+)?
+<string> ::= '"' <char>* '"'
+<digit> ::= [0-9]
+<char> ::= any printable character
+
+<identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
+
+<binary_operation> ::= <expression> <operator> <expression>
+<operator> ::= "+" | "-" | "*" | "/" | "==" | "+"
+
+<array> ::= "[" <expression> ("," <expression>)* "]"
+         | "[]"
+
+<object> ::= "{" (<string> ":" <expression> ("," <string> ":" <expression>)*)? "}"
+
+<function_definition> ::= "fn" "(" <parameter_list> ")" "{" <statement>* "}"
+<parameter_list> ::= <identifier> ("," <identifier>)*
+                  | ε
+
+<function_call> ::= <expression> "(" <argument_list> ")"
+<argument_list> ::= <expression> ("," <expression>)*
+                  | ε
+
+<array_access> ::= <expression> "[" <expression> "]"
+
+<if_expression> ::= "if" "(" <expression> ")" "{" <statement>* "}"
+                  ("else" "{" <statement>* "}")?
+
+<return_statement> ::= "return" <expression> ";"
+
+<built_in_function> ::= "print" | "len" | "first" | "rest" | "push"
