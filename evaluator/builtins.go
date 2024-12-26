@@ -175,8 +175,26 @@ var builtins = map[string]*object.Builtin{
 				return TRUE
 			case *object.Boolean:
 				return arg
+			case *object.String:
+				if arg.Value == "" {
+					return FALSE
+				}
+				return TRUE
+			case *object.Array:
+				if len(arg.Elements) == 0 {
+					return FALSE
+				}
+				return TRUE
+			case *object.Map:
+				if len(arg.Pairs) == 0 {
+					return FALSE
+				}
+				return TRUE
 			default:
-				return newError("argument to `bool` not supported, got %s", args[0].Type())
+				if arg == NULL {
+					return FALSE
+				}
+				return TRUE
 			}
 		},
 	},
