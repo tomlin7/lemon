@@ -147,7 +147,147 @@ var builtins = map[string]*object.Builtin{
 			}
 		},
 	},
+	"keys": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
 
+			if args[0].Type() != object.MAP_OBJ {
+				return newError("argument to `keys` must be MAP, got %s",
+					args[0].Type())
+			}
+
+			m := args[0].(*object.Map)
+			keys := make([]object.Object, len(m.Pairs))
+			i := 0
+			for _, v := range m.Pairs {
+				keys[i] = v.Key
+				i++
+			}
+
+			return &object.Array{Elements: keys}
+		},
+	},
+	"values": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			if args[0].Type() != object.MAP_OBJ {
+				return newError("argument to `values` must be MAP, got %s",
+					args[0].Type())
+			}
+
+			m := args[0].(*object.Map)
+			values := make([]object.Object, len(m.Pairs))
+			i := 0
+			// order of keys is not guaranteed
+			for _, v := range m.Pairs {
+				values[i] = v.Value
+				i++
+			}
+
+			return &object.Array{Elements: values}
+		},
+	},
+	"merge": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) < 1 {
+				return newError("wrong number of arguments. got=%d, want=1+", len(args))
+			}
+
+			switch arg := args[0].(type) {
+			case *object.Array:
+				for _, a := range args[1:] {
+					if a.Type() != object.ARRAY_OBJ {
+						return newError("all arguments to `merge` must be of same type, got %s",
+							a.Type())
+					}
+					arr := a.(*object.Array)
+					arg.Elements = append(arg.Elements, arr.Elements...)
+				}
+				return arg
+			case *object.String:
+				for _, a := range args[1:] {
+					if a.Type() != object.STRING_OBJ {
+						return newError("all arguments to `merge` must be of same type, got %s",
+							a.Type())
+					}
+					str := a.(*object.String)
+					arg.Value += str.Value
+				}
+				return arg
+			case *object.Map:
+				for _, a := range args[1:] {
+					if a.Type() != object.MAP_OBJ {
+						return newError("all arguments to `merge` must be of same type, got %s",
+							a.Type())
+					}
+					m := a.(*object.Map)
+					for key, value := range m.Pairs {
+						arg.Pairs[key] = value
+					}
+				}
+				return arg
+			default:
+				return newError("argument to `merge` not supported, got %s", args[0].Type())
+			}
+		},
+	},
+	"merged": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) < 1 {
+				return newError("wrong number of arguments. got=%d, want=1+", len(args))
+			}
+
+			switch arg := args[0].(type) {
+			case *object.Array:
+				newElements := make([]object.Object, len(arg.Elements))
+				copy(newElements, arg.Elements)
+				for _, a := range args[1:] {
+					if a.Type() != object.ARRAY_OBJ {
+						return newError("all arguments to `merged` must be of same type, got %s",
+							a.Type())
+					}
+					arr := a.(*object.Array)
+					newElements = append(newElements, arr.Elements...)
+				}
+				return &object.Array{Elements: newElements}
+			case *object.String:
+				newValue := arg.Value
+				for _, a := range args[1:] {
+					if a.Type() != object.STRING_OBJ {
+						return newError("all arguments to `merged` must be of same type, got %s",
+							a.Type())
+					}
+					str := a.(*object.String)
+					newValue += str.Value
+				}
+				return &object.String{Value: newValue}
+			case *object.Map:
+				newPairs := make(map[object.HashKey]object.MapPair)
+				for key, value := range arg.Pairs {
+					newPairs[key] = value
+				}
+				for _, a := range args[1:] {
+					if a.Type() != object.MAP_OBJ {
+						return newError("all arguments to `merged` must be of same type, got %s",
+							a.Type())
+					}
+					m := a.(*object.Map)
+					for key, value := range m.Pairs {
+						newPairs[key] = value
+					}
+				}
+				return &object.Map{Pairs: newPairs}
+
+			default:
+				return newError("argument to `merged` not supported, got %s", args[0].Type())
+			}
+		},
+	},
 	// I/O functions
 
 	"print": {
