@@ -7,6 +7,8 @@ import (
 )
 
 var builtins = map[string]*object.Builtin{
+	// Iterables/Sequences
+
 	"len": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
@@ -99,6 +101,54 @@ var builtins = map[string]*object.Builtin{
 			return arr
 		},
 	},
+	"pop": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			if args[0].Type() != object.ARRAY_OBJ {
+				return newError("argument to `pop` must be ARRAY, got %s",
+					args[0].Type())
+			}
+
+			arr := args[0].(*object.Array)
+			length := len(arr.Elements)
+			if length > 0 {
+				popped := arr.Elements[length-1]
+				arr.Elements = arr.Elements[:length-1]
+				return popped
+			}
+
+			return NULL
+		},
+	},
+	"clone": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			switch arg := args[0].(type) {
+			case *object.Array:
+				newElements := make([]object.Object, len(arg.Elements))
+				copy(newElements, arg.Elements)
+				return &object.Array{Elements: newElements}
+			case *object.String:
+				return &object.String{Value: arg.Value}
+			case *object.Map:
+				newPairs := make(map[object.HashKey]object.MapPair)
+				for key, value := range arg.Pairs {
+					newPairs[key] = value
+				}
+				return &object.Map{Pairs: newPairs}
+			default:
+				return newError("argument to `clone` not supported, got %s", args[0].Type())
+			}
+		},
+	},
+
+	// I/O functions
 
 	"print": {
 		Fn: func(args ...object.Object) object.Object {
@@ -126,6 +176,8 @@ var builtins = map[string]*object.Builtin{
 			return &object.String{Value: input}
 		},
 	},
+
+	// Type conversion functions
 	"int": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
