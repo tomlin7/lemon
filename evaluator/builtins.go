@@ -3,6 +3,7 @@ package evaluator
 import (
 	"fmt"
 	"lemon/object"
+	"strconv"
 )
 
 var builtins = map[string]*object.Builtin{
@@ -123,6 +124,60 @@ var builtins = map[string]*object.Builtin{
 			var input string
 			fmt.Scanln(&input)
 			return &object.String{Value: input}
+		},
+	},
+	"int": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			switch arg := args[0].(type) {
+			case *object.String:
+				value, err := strconv.ParseInt(arg.Value, 0, 64)
+				if err != nil {
+					return newError("could not parse %q as integer", arg.Value)
+				}
+				return &object.Integer{Value: value}
+			case *object.Integer:
+				return arg
+			case *object.Boolean:
+				if arg.Value {
+					return &object.Integer{Value: 1}
+				} else {
+					return &object.Integer{Value: 0}
+				}
+			default:
+				return newError("argument to `int` not supported, got %s", args[0].Type())
+			}
+		},
+	},
+	"str": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			return &object.String{Value: args[0].Inspect()}
+		},
+	},
+	"bool": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			switch arg := args[0].(type) {
+			case *object.Integer:
+				if arg.Value == 0 {
+					return FALSE
+				}
+				return TRUE
+			case *object.Boolean:
+				return arg
+			default:
+				return newError("argument to `bool` not supported, got %s", args[0].Type())
+			}
 		},
 	},
 }
