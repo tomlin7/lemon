@@ -118,4 +118,11 @@ var builtins = map[string]*object.Builtin{
 			return NULL
 		},
 	},
+	"input": {
+		Fn: func(args ...object.Object) object.Object {
+			var input string
+			fmt.Scanln(&input)
+			return &object.String{Value: input}
+		},
+	},
 }
