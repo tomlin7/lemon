@@ -104,6 +104,15 @@ var builtins = map[string]*object.Builtin{
 			for _, arg := range args {
 				fmt.Printf("%s ", arg.Inspect())
 			}
+
+			return NULL
+		},
+	},
+	"println": {
+		Fn: func(args ...object.Object) object.Object {
+			for _, arg := range args {
+				fmt.Printf("%s ", arg.Inspect())
+			}
 			fmt.Println()
 
 			return NULL
