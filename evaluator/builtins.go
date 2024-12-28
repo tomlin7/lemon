@@ -3,6 +3,7 @@ package evaluator
 import (
 	"fmt"
 	"lemon/object"
+	"sort"
 	"strconv"
 )
 
@@ -288,6 +289,110 @@ var builtins = map[string]*object.Builtin{
 			}
 		},
 	},
+	"sort": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			if args[0].Type() != object.ARRAY_OBJ {
+				return newError("argument to `sort` must be ARRAY, got %s",
+					args[0].Type())
+			}
+
+			arr := args[0].(*object.Array)
+			if len(arr.Elements) == 0 {
+				return arr
+			}
+
+			switch arr.Elements[0].(type) {
+			case *object.Integer:
+				ints := make([]int, len(arr.Elements))
+				for i, e := range arr.Elements {
+					if intObj, ok := e.(*object.Integer); ok {
+						ints[i] = int(intObj.Value)
+					} else {
+						return newError("all elements in array must be INTEGER, got %s", e.Type())
+					}
+				}
+				sort.Ints(ints)
+				for i, e := range ints {
+					arr.Elements[i] = &object.Integer{Value: int64(e)}
+				}
+			case *object.String:
+				strs := make([]string, len(arr.Elements))
+				for i, e := range arr.Elements {
+					if strObj, ok := e.(*object.String); ok {
+						strs[i] = strObj.Value
+					} else {
+						return newError("all elements in array must be STRING, got %s", e.Type())
+					}
+				}
+				sort.Strings(strs)
+				for i, e := range strs {
+					arr.Elements[i] = &object.String{Value: e}
+				}
+			default:
+				return newError("argument to `sort` not supported, got %s", arr.Elements[0].Type())
+			}
+
+			return arr
+		},
+	},
+	"sorted": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			if args[0].Type() != object.ARRAY_OBJ {
+				return newError("argument to `sorted` must be ARRAY, got %s",
+					args[0].Type())
+			}
+
+			arr := args[0].(*object.Array)
+			if len(arr.Elements) == 0 {
+				return arr
+			}
+
+			newElements := make([]object.Object, len(arr.Elements))
+			copy(newElements, arr.Elements)
+
+			switch newElements[0].(type) {
+			case *object.Integer:
+				ints := make([]int, len(newElements))
+				for i, e := range newElements {
+					if intObj, ok := e.(*object.Integer); ok {
+						ints[i] = int(intObj.Value)
+					} else {
+						return newError("all elements in array must be INTEGER, got %s", e.Type())
+					}
+				}
+				sort.Ints(ints)
+				for i, e := range ints {
+					newElements[i] = &object.Integer{Value: int64(e)}
+				}
+			case *object.String:
+				strs := make([]string, len(newElements))
+				for i, e := range newElements {
+					if strObj, ok := e.(*object.String); ok {
+						strs[i] = strObj.Value
+					} else {
+						return newError("all elements in array must be STRING, got %s", e.Type())
+					}
+				}
+				sort.Strings(strs)
+				for i, e := range strs {
+					newElements[i] = &object.String{Value: e}
+				}
+			default:
+				return newError("argument to `sorted` not supported, got %s", newElements[0].Type())
+			}
+
+			return &object.Array{Elements: newElements}
+		},
+	},
+
 	// I/O functions
 
 	"print": {
