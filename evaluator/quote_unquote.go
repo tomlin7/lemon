@@ -41,6 +41,57 @@ func convertObjectToASTNode(obj object.Object) ast.Node {
 		}
 		return &ast.IntegerLiteral{Token: t, Value: obj.Value}
 
+	case *object.Boolean:
+		var t token.Token
+		if obj.Value {
+			t = token.Token{Type: token.TRUE, Literal: "true"}
+		} else {
+			t = token.Token{Type: token.FALSE, Literal: "false"}
+		}
+		return &ast.Boolean{Token: t, Value: obj.Value}
+
+	case *object.Null:
+		// TODO: hack, find better way to represent null
+		t := token.Token{Type: token.INT, Literal: "null"}
+		return &ast.IntegerLiteral{Token: t, Value: 0}
+
+	case *object.String:
+		t := token.Token{
+			Type:    token.STRING,
+			Literal: obj.Value,
+		}
+		return &ast.StringLiteral{Token: t, Value: obj.Value}
+
+	case *object.Array:
+		elements := []ast.Expression{}
+		for _, el := range obj.Elements {
+			elements = append(elements, convertObjectToASTNode(el).(ast.Expression))
+		}
+		return &ast.ArrayLiteral{Token: token.Token{Type: token.LBRACKET, Literal: "["}, Elements: elements}
+
+	case *object.Map:
+		pairs := make(map[ast.Expression]ast.Expression)
+		for _, value := range obj.Pairs {
+			key := convertObjectToASTNode(value.Key).(ast.Expression)
+			val := convertObjectToASTNode(value.Value).(ast.Expression)
+			pairs[key] = val
+		}
+		return &ast.MapLiteral{Token: token.Token{Type: token.LBRACE, Literal: "{"}, Pairs: pairs}
+
+	case *object.Function:
+		return &ast.Identifier{
+			Token: token.Token{Type: token.IDENT},
+			Value: "function", // replace with the name of the function
+		}
+
+	case *object.Builtin:
+		return &ast.Identifier{
+			Token: token.Token{Type: token.IDENT},
+			Value: obj.Value,
+		}
+	case *object.Quote:
+		return obj.Node
+
 	default:
 		return nil
 	}

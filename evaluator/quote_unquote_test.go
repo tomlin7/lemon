@@ -75,6 +75,57 @@ func TestQuoteUnquote(t *testing.T) {
 			quote(unquote(foobar))`,
 			`8`,
 		},
+		{
+			`quote(unquote(true))`,
+			`true`,
+		},
+		{
+			`quote(unquote(true == false))`,
+			`false`,
+		},
+		{
+			`quote(unquote("foobar"))`,
+			`"foobar"`,
+		},
+		{
+			`quote(unquote("foo" + "bar"))`,
+			`"foobar"`,
+		},
+		{
+			`quote(unquote([1, 2, 3, 4]))`,
+			`[1, 2, 3, 4]`,
+		},
+		{
+			`quote(unquote([1, 2, 3, 4][1]))`,
+			`2`,
+		},
+		{
+			`quote(unquote({"foo": 5, "bar": 8}))`,
+			`{"foo": 5, "bar": 8}`,
+		},
+		{
+			`quote(unquote({"foo": 5, "bar": 8}["foo"]))`,
+			`5`,
+		},
+		// functions
+		{
+			`let f = fn(x) { x + 4 };
+			quote(unquote(f(4)))`,
+			`8`,
+		},
+		{
+			`quote(unquote(fn(x) { x + 4; }(4)))`,
+			`8`,
+		},
+		{
+			`quote(unquote(quote(4 + 4)))`,
+			`(4 + 4)`,
+		},
+		{
+			`let quotedInfixExpression = quote(4 + 4);
+            quote(unquote(4 + 4) + unquote(quotedInfixExpression))`,
+			`(8 + (4 + 4))`,
+		},
 	}
 
 	for _, tt := range tests {
