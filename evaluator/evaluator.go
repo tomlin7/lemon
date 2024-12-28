@@ -48,7 +48,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	// expressions
 	case *ast.CallExpression:
 		if node.Function.TokenLiteral() == "quote" {
-			return quote(node.Arguments[0])
+			return quote(node.Arguments[0], env)
 		}
 
 		fn := Eval(node.Function, env)
