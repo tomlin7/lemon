@@ -48,6 +48,15 @@ func Modify(node Node, modifier ModifierFunc) Node {
 		for i, elem := range node.Elements {
 			node.Elements[i], _ = Modify(elem, modifier).(Expression)
 		}
+
+	case *MapLiteral:
+		newPairs := make(map[Expression]Expression)
+		for key, value := range node.Pairs {
+			k, _ := Modify(key, modifier).(Expression)
+			v, _ := Modify(value, modifier).(Expression)
+			newPairs[k] = v
+		}
+		node.Pairs = newPairs
 	}
 
 	return modifier(node)
