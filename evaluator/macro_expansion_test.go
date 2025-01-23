@@ -82,6 +82,20 @@ func TestExpandMacros(t *testing.T) {
 			`,
 			`(10 - 5) - (2 + 2)`,
 		},
+		{
+			`
+			let unless = macro(condition, consequence, alternative) {
+				quote(if (!(unquote(condition))) {
+					unquote(consequence);
+				} else {
+					unquote(alternative); 
+				});
+			};
+			
+			unless(10 > 5, print("not greater"), print("greater?!"));
+			`,
+			`if (!(10 > 5)) { print("not greater") } else { print("greater?!") }`,
+		},
 	}
 
 	for _, tt := range tests {
