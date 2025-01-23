@@ -47,6 +47,10 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 
 	// expressions
 	case *ast.CallExpression:
+		if node.Function.TokenLiteral() == "quote" {
+			return quote(node.Arguments[0], env)
+		}
+
 		fn := Eval(node.Function, env)
 		if isError(fn) {
 			return fn
@@ -438,4 +442,22 @@ func evalMapIndexExpression(_map, index object.Object) object.Object {
 	}
 
 	return pair.Value
+}
+
+func DefineMacros(program *ast.Program, env *object.Environment) {
+	definitions := []int{}
+
+	for i, statement := range program.Statements {
+		if isMacroDefinition(statement) {
+			addMacro(statement, env)
+			definitions = append(definitions, i)
+		}
+	}
+
+	for i := len(definitions) - 1; i >= 0; i = i - 1 {
+		definitionIndex := definitions[i]
+		program.Statements = append(
+			program.Statements[:definitionIndex],
+			program.Statements[definitionIndex+1:]...)
+	}
 }

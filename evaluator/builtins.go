@@ -11,6 +11,7 @@ var builtins = map[string]*object.Builtin{
 	// Iterables/Sequences
 
 	"len": {
+		Value: "len",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -27,6 +28,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"first": {
+		Value: "first",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -43,6 +45,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"last": {
+		Value: "last",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -61,6 +64,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"rest": {
+		Value: "rest",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -87,6 +91,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"push": {
+		Value: "push",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 2 {
 				return newError("wrong number of arguments. got=%d, want=2", len(args))
@@ -103,6 +108,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"pop": {
+		Value: "pop",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -125,6 +131,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"clone": {
+		Value: "clone",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -149,6 +156,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"keys": {
+		Value: "keys",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -171,6 +179,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"values": {
+		Value: "values",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -194,6 +203,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"merge": {
+		Value: "merge",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) < 1 {
 				return newError("wrong number of arguments. got=%d, want=1+", len(args))
@@ -238,6 +248,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"merged": {
+		Value: "merged",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) < 1 {
 				return newError("wrong number of arguments. got=%d, want=1+", len(args))
@@ -290,6 +301,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"sort": {
+		Value: "sort",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -340,6 +352,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"sorted": {
+		Value: "sorted",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -396,6 +409,7 @@ var builtins = map[string]*object.Builtin{
 	// I/O functions
 
 	"print": {
+		Value: "print",
 		Fn: func(args ...object.Object) object.Object {
 			for _, arg := range args {
 				fmt.Printf("%s ", arg.Inspect())
@@ -405,6 +419,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"println": {
+		Value: "println",
 		Fn: func(args ...object.Object) object.Object {
 			for _, arg := range args {
 				fmt.Printf("%s ", arg.Inspect())
@@ -415,6 +430,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"input": {
+		Value: "input",
 		Fn: func(args ...object.Object) object.Object {
 			var input string
 			fmt.Scanln(&input)
@@ -424,6 +440,7 @@ var builtins = map[string]*object.Builtin{
 
 	// Type conversion functions
 	"int": {
+		Value: "int",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -450,6 +467,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"str": {
+		Value: "str",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
@@ -459,6 +477,7 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 	"bool": {
+		Value: "bool",
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("wrong number of arguments. got=%d, want=1", len(args))
